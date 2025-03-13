@@ -1,4 +1,4 @@
-Marketplace - UI y API
+Marketplace -  API
 
 Este proyecto implementa la API para un Marketplace que permite a vendedores registrar productos, a compradores buscarlos y administradores gestionar la plataforma.
 

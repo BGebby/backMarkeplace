@@ -1,0 +1,52 @@
+services:
+  server:
+    container_name: "back-marketplace"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - 3000:$PORT
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_NAME=$DB_NAME
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mysql
+    command: npm run start:dev
+    
+
+  mysql:
+    image: mysql
+    container_name: "mysql-marketplace"
+    # restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=$HOST
+    command: mysqld --sql_mode=""
+    ports:
+      - $DB_PORT:$MYSQLDB_DOCKER_PORT
+    
+    volumes:
+      - mysql_data:/var/lib/mysql 
+      - ./supabase/migrations:/docker-entrypoint-initdb.d
+
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: "phpmyadmin-marketplace"
+    ports:
+      - 8606:80
+    environment:
+      - PMA_HOST=mysql
+      - UPLOAD_LIMIT=300M
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

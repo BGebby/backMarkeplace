@@ -1,20 +1,27 @@
-import { Controller, Post, Body, Get, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { RegisterProductDto } from './dto/registerproduct.dto';
-import { ProductService } from './product.service';
-import { ViewProductDto } from './dto/viewproduct.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import * as fs from 'fs';
-import { cloudinaryStorage } from 'src/config/cloudinary.config';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  UploadedFile,
+  UseInterceptors,
+} from "@nestjs/common";
+import { RegisterProductDto } from "./dto/registerproduct.dto";
+import { ProductService } from "./product.service";
+import { ViewProductDto } from "./dto/viewproduct.dto";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { diskStorage } from "multer";
+import { extname } from "path";
+import * as fs from "fs";
+import { cloudinaryStorage } from "src/config/cloudinary.config";
 
-
-@Controller('product')
+@Controller("product")
 export class ProductController {
   constructor(private productService: ProductService) {}
-  
-  @Get('ver')
+
+  @Get("ver")
   async getAllProduct() {
     return this.productService.getAllProduct();
   }
@@ -51,24 +58,20 @@ export class ProductController {
   //     imagen: imagenPath, // Guardamos solo la ruta en la base de datos
   //   });
   // }
-  @Post('register')
+  @Post("register")
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('imagen', { storage: cloudinaryStorage }))
+  @UseInterceptors(FileInterceptor("imagen", { storage: cloudinaryStorage }))
   async register(@Body() body: any, @UploadedFile() file: Express.Multer.File) {
-    const imageUrl = file ? file.path : ''; // Cloudinary devuelve una URL en `file.path`
+    const imageUrl = file ? file.path : ""; // Cloudinary devuelve una URL en `file.path`
 
-    return {
-      message: 'Producto registrado',
-      data: {
-        ...body,
-        imagen: imageUrl, // Guardamos la URL de Cloudinary en la BD
-      },
-    };
+    return this.productService.register({
+      ...body,
+      imagen: imageUrl, // Guardamos solo la ruta en la base de datos
+    });
   }
-  @Post('user')
+  @Post("user")
   @UseGuards(JwtAuthGuard)
   async getProduct(@Body() viewProductDto: ViewProductDto) {
     return this.productService.getProduct(viewProductDto);
   }
-  
 }

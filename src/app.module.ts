@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { databaseConfig } from './config/databaseConfig';
 import { ProductModule } from './products/product.module';
+import { CloudinaryModule } from './modules/cloudinary.module';
 
 @Module({
   
@@ -11,6 +12,7 @@ import { ProductModule } from './products/product.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    CloudinaryModule,
     TypeOrmModule.forRoot(databaseConfig()
     ),
     AuthModule,

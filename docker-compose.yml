@@ -13,6 +13,9 @@ services:
       - DB_PASSWORD=$DB_PASSWORD
       - DB_NAME=$DB_NAME
       - CORS_ORIGIN=$CORS_ORIGIN
+      - CLOUDINARY_CLOUD_NAME=$CLOUDINARY_CLOUD_NAME
+      - CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY
+      - CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

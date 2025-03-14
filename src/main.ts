@@ -17,6 +17,7 @@ async function bootstrap() {
     origin: [configService.get<string>('CORS_ORIGIN') || 'http://localhost:5173'],
     credentials: true,
   });
+  console.log(configService.get<string>('CORS_ORIGIN'));
 
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/', 

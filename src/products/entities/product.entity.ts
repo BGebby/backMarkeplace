@@ -32,5 +32,5 @@ export class Product {
   user: User;
 
   @CreateDateColumn()
-  create_at: Date;
+  created_at: Date;
 }
